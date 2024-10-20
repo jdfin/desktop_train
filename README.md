@@ -18,9 +18,12 @@ on the track to let the computer know where everything is.
 ## Track
 
 I use [Kato Unitrack](https://katousa.com/ho-unitrack):
-* [Just the track](Desktop Layout Track.jpg)
-* [With engine house, monitor, laptop stand](Desktop Layout Stuff.jpg)
-* [Fancy SCARM rendering](Desktop Layout 3D.jpg)
+* Just the track
+  ![Just the track](images/desktop_layout_track.jpg)
+* With engine house, monitor, and laptop stand
+  ![With engine house, monitor, laptop stand](images/desktop_layout_stuff.jpg)
+* Fancy SCARM 3D rendering
+  ![Fancy SCARM 3D rendering](images/desktop_layout_3d.jpg)
 
 T0 and T1 are the turnouts, each with a Kato turnout machine. The computer can
 close or throw the switches to route the train.
@@ -39,7 +42,7 @@ gets them uncoupled, with the car's coupler still over the magnet, ready for a
 shove.
 
 S2, S4, and S6 are used when shoving a car to a spur. They are mounted about
-100mm from the end of each spur.
+110mm from the end of each spur.
 
 S3, S5, and S7 are used when fetching a car from a spur. They are mounted
 about 50mm from the end of each spur.
@@ -116,11 +119,13 @@ watt for a few hundred milliseconds each throw. In any case a 1-Watt resistor
 is easy to use and should be well capable of the power required.
 
 
+```
 12V >----/\/\/------+------> L293DNE VCC2
           100       |
           1 W      === 2200 uF
                     |
                    GND
+```
 
 Six GPIOs are needed, three for each turnout. There might be a way to do it
 with two per turnout, but GPIOs are plentiful on the Mega 2560. Controlling
@@ -131,15 +136,16 @@ unit.
 
 ### Wiring
 
-Bussed power to the sensors
-AWG30 is fine
-Just lays along the track
+* Bussed power to the sensors with separate 'detect' signals
+* AWG30 is fine when the sensors run at 5V
+* Just lays along the track
 
 ### Display
 
-There's an i2c 64 x 128 OLED in one of the upstairs windows, used to show what the
-computer is trying to do to help diagnose trouble. The text is so tiny it's only
-good for diagnostics, not very good for show.
+There's an [i2c 64 x 128 OLED](https://www.amazon.com/dp/B06XRBTBTB) in one of
+the upstairs windows, used to show what the computer is trying to do to help
+diagnose trouble. The text is so tiny it's only good for diagnostics, not very
+good for show.
 
 ### LED
 
@@ -179,21 +185,24 @@ sensor spacers.
 constantly moving around, it gets jostled. Rather than have the track always
 kinky, there are printed spacers that hold the spurs in place relative to each
 other. The spacers also hold the sensors in the right places along the spurs
-(50mm and 100mm from the ends) so sensor movement doesn't break things. All
+(50mm and 110mm from the ends) so sensor movement doesn't break things. All
 of the spacers are drawn up in Fusion so it can get the geometry right.
 
 * Engine house. This goes at the left end, and is long enough to comfortably
 hold an SW1200 or GP30, with all the electronics in the ceiling. Putting the
 electronics in the ceiling lets the whole house fit in the printer's volume.
 There is one piece that is the floor and walls, another is the ceiling where
-everything mounts, and a third is the roof that just sits on top.
+everything mounts, and a third is the roof that just sits on top. It would
+work fine to just put all the electronics on the desk next to the track, and
+add one more sensor holder (S0).
 
 ## Software
 
-The software is CommandStation-EX (an Arduino program) with a fairly simple
-EX-Rail script to read sensors, control turnouts, and run the train. In this
-repo, the directory arduino/CommandStation-EX has the original 5.0.7 release
-changed as follows:
+The software is
+[CommandStation-EX ](https://github.com/DCC-EX/CommandStation-EX) (an Arduino
+program) with a fairly simple EX-Rail script to read sensors, control
+turnouts, and run the train. In this repo, the directory
+arduino/CommandStation-EX has the 5.0.7 release, changed as follows:
 * config.h copied from config.example.h, then (1) WiFi disabled and (2)
 display enabled. Disabling WiFi is not really required, and enabling the
 display is (obviously) only if you have a display.
@@ -221,8 +230,8 @@ although I'm sure either of those would work just as well. A few batch files
 set up, initialize, build, and download to the board:
 * ac-init.bat is run once at the beginning of time, and sets up the command
 line tools
-* brd-mega2560.bat is run once per terminal session, and sets an environment
-variable for the building
-* ac-build.bat <project> <port> will build and (if <port> is supplied)
+* brd-mega2560.bat is created by ac-init.bat, must be run once per terminal
+session, and sets an environment variable for the building
+* ac-build.bat \<project\> \<port\> will build and (if \<port\> is supplied)
 download a project to the board, e.g. 'ac-build.bat CommandStation-EX' to
-build, or 'ac-build-bat CommandStation-EX com3' to build and flash the board.
+build, or 'ac-build.bat CommandStation-EX com3' to build and flash the board.
