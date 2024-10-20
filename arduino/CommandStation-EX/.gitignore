@@ -1,0 +1,13 @@
+Release/*
+.ino.cpp
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
+.pio/
+.vscode/
+mySetup.cpp
+myHal.cpp
+myFilter.cpp
+!my*.example.h
+compile_commands.json

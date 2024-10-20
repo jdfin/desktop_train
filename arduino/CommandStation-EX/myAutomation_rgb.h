@@ -1,0 +1,48 @@
+AUTOSTART
+
+ALIAS(TIME_MS, 3000)
+
+CALL(DisplayClear)
+
+RESET(RedPin)
+RESET(GreenPin)
+RESET(BluePin)
+
+FOLLOW(MainLoop)
+DONE
+
+SEQUENCE(MainLoop)
+
+  SCREEN(0, 0, "OFF")
+  CALL(LedOff)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "RED")
+  CALL(LedRed)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "GREEN")
+  CALL(LedGreen)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "BLUE")
+  CALL(LedBlue)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "YELLOW")
+  CALL(LedYellow)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "MAGENTA")
+  CALL(LedMagenta)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "CYAN")
+  CALL(LedCyan)
+  DELAY(TIME_MS)
+
+  SCREEN(0, 0, "WHITE")
+  CALL(LedWhite)
+  DELAY(TIME_MS)
+
+  FOLLOW(MainLoop)
