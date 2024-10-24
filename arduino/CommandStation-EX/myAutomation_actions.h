@@ -25,9 +25,10 @@ ALIAS(UncoupleRetry, 21)
 
 ALIAS(SpotPart1, 30)
 ALIAS(SpotPart2, 31)
-ALIAS(SpotSpur1, 32)
-ALIAS(SpotSpur2, 33)
-ALIAS(SpotSpur3, 34)
+ALIAS(SpotPart3, 32)
+ALIAS(SpotSpur1, 33)
+ALIAS(SpotSpur2, 34)
+ALIAS(SpotSpur3, 35)
 
 ALIAS(FetchPart1, 40)
 ALIAS(FetchPart2, 41)
@@ -224,8 +225,10 @@ SEQUENCE(UncoupleRetry)
 
 // Set turnouts
 // Call SpotPart1
-// Wait for spur-end sensor
+// Wait for spot sensor
 // Call SpotPart2
+// Verify spot sensor is active
+// Call SportPart3
 
 SEQUENCE(SpotPart1)
   SCREEN(0, 4, "PART 1")
@@ -244,8 +247,11 @@ SEQUENCE(SpotPart2)
   CALL(BellOff)
   CALL(EngineSoundIf)
   CALL(UncoupleSound)
-  // XXX check that we left the car behind
   FWD(FastDcc)
+  DELAY(5000)
+  RETURN
+
+SEQUENCE(SpotPart3)
   AT(Sensor1)
   POM(CvDeceleration, 10)
   FWD(SlowDcc)
@@ -256,8 +262,18 @@ SEQUENCE(SpotSpur1)
   PRINT("Spot to Spur 1")
   CALL(Close0)
   CALL(SpotPart1)
+  // Wait for spot sensor
   AT(Sensor2)
   CALL(SpotPart2)
+  // Verify spot sensor is still active
+  IFNOT(Sensor2)
+    // Uncouple did not work; retry
+    PRINT("Retry")
+    FWD(SlowDcc)
+    CALL(Uncouple)
+    FOLLOW(SpotSpur1)
+  ENDIF
+  CALL(SpotPart3)
   RETURN
 
 SEQUENCE(SpotSpur2)
@@ -266,8 +282,18 @@ SEQUENCE(SpotSpur2)
   CALL(Throw0)
   CALL(Throw1)
   CALL(SpotPart1)
+  // Wait for spot sensor
   AT(Sensor4)
   CALL(SpotPart2)
+  // Verify spot sensor is still active
+  IFNOT(Sensor4)
+    // Uncouple did not work; retry
+    PRINT("Retry")
+    FWD(SlowDcc)
+    CALL(Uncouple)
+    FOLLOW(SpotSpur1)
+  ENDIF
+  CALL(SpotPart3)
   RETURN
 
 SEQUENCE(SpotSpur3)
@@ -276,8 +302,18 @@ SEQUENCE(SpotSpur3)
   CALL(Throw0)
   CALL(Close1)
   CALL(SpotPart1)
+  // Wait for spot sensor
   AT(Sensor6)
   CALL(SpotPart2)
+  // Verify spot sensor is still active
+  IFNOT(Sensor6)
+    // Uncouple did not work; retry
+    PRINT("Retry")
+    FWD(SlowDcc)
+    CALL(Uncouple)
+    FOLLOW(SpotSpur1)
+  ENDIF
+  CALL(SpotPart3)
   RETURN
 
 // Fetch car from spur:

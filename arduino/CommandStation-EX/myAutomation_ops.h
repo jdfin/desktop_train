@@ -16,6 +16,8 @@ SEQUENCE(MainLoop)
 
   IF(SwRun)
 
+    // Sensors 3, 5, and 7 should not be active
+
     IF(Sensor3)
       SCREEN(0, 0, "ERROR")
       SCREEN(0, 2, "SENSOR 3")
@@ -49,6 +51,7 @@ SEQUENCE(MainLoop)
     CALL(DitchLightsOn)
     CALL(SwitchModeOn)
     CALL(EngineSoundIf)
+
     DELAY(5000)
 
     // Comments:
