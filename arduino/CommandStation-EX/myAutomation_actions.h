@@ -291,7 +291,7 @@ SEQUENCE(SpotSpur2)
     PRINT("Retry")
     FWD(SlowDcc)
     CALL(Uncouple)
-    FOLLOW(SpotSpur1)
+    FOLLOW(SpotSpur2)
   ENDIF
   CALL(SpotPart3)
   RETURN
@@ -311,7 +311,7 @@ SEQUENCE(SpotSpur3)
     PRINT("Retry")
     FWD(SlowDcc)
     CALL(Uncouple)
-    FOLLOW(SpotSpur1)
+    FOLLOW(SpotSpur3)
   ENDIF
   CALL(SpotPart3)
   RETURN
